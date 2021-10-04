@@ -1,18 +1,80 @@
 <!DOCTYPE html>
-<!-- saved from url=(0113)https://oauth.telegram.org/embed/samplebot?origin=https%3A%2F%2Fcore.telegram.org&size=large&request_access=write -->
-<html>
-
-<head>
-</head>
-
-<body class="widget_frame_base tgme_widget body_widget_login">
-<script async src="https://telegram.org/js/telegram-widget.js?15" data-telegram-login="Crinte_Bot" data-size="large" data-onauth="onTelegramAuth(user)"></script>
-<script type="text/javascript">
-  function onTelegramAuth(user) {
-    alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
-  }
-</script>
-
-</body>
-
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Telegram Login Widget，製作用 Telegram 登入功能 - Augustus - Let's Write</title>
+    <link rel="canonical" href="https://letswrite.tw/letswrite-telegram-login/"/>
+    <meta property="og:url" content="https://letswritetw.github.io/letswrite-telegram-login/"/>
+    <meta property="fb:app_id" content="911000986339138"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Let's Write"/>
+    <meta property="og:title" content="Telegram Login Widget，製作用 Telegram 登入功能 - Augustus - Let's Write"/>
+    <meta itemprop="name" content="Telegram Login Widget，製作用 Telegram 登入功能 - Augustus - Let's Write"/>
+    <meta name="description" content="文章大綱"/>
+    <meta property="og:description" content="文章大綱"/>
+    <meta itemprop="description" content="文章大綱"/>
+    <meta itemprop="image" content="https://letswritetw.github.io/letswrite-telegram-login/fb.jpg"/>
+    <meta property="og:image" content="https://letswritetw.github.io/letswrite-telegram-login/fb.jpg"/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
+    <meta property="og:image:alt" content="Telegram Login Widget，製作用 Telegram 登入功能"/>
+    <link rel="shortcut icon" href="https://letswritetw.github.io/letswritetw/dist/img/logo_512.png"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"/>
+    <link rel="stylesheet" href="dist/style.min.css"/>
+    <!-- Google Tag Manager-->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PGQ9WQT');
+    </script>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript)-->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGQ9WQT" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <div class="container">
+      <h1 class="text-center">Telegram Login Widget</h1>
+      <hr/>
+      <div class="text-center">
+        <p>筆記文：<a href="https://letswrite.tw/telegram-login/">Let's Write</a></p>
+      </div>
+      <h2>1. Callback</h2>
+      <div class="mb-4"></div>
+      <script async src="https://telegram.org/js/telegram-widget.js?15" data-telegram-login="Crinte_Bot" data-size="large" data-auth-url="www.baidu.com"></script>
+      <div class="mb-4"></div>
+      <pre><code id="code">登入後取得的資料會顯示在這</code></pre>
+      <hr/>
+      <h2>2. Redirect to URL</h2>
+      <h3>HTML</h3>
+      <p>生成器網址：<a href="https://core.telegram.org/widgets/login#widget-configuration" target="_blank" ref="noopener noreferrer">Widget configuration</a></p>
+      <pre><code>&lt;!-- 在要產生登入按鈕的地方貼上以下 -->
+&lt;script async src="https://telegram.org/js/telegram-widget.js?14"
+        data-telegram-login="Telegram 機器人的「使用者名稱」"
+        data-size="large"
+        data-auth-url="要轉去哪個 URL 做後端處理"
+        data-request-access="write">&lt;/script></code></pre>
+      <h3>後端，本處是用 Google Apps Script</h3>
+      <script src="https://gist.github.com/letswritetw/ec4f9037f69af01b7e7c3154a9ba4b40.js"></script>
+      <hr/>
+    </div>
+    <script>
+      // Callback 的 function
+      // 這邊會送資料到 Let's Write 的 Firebase，clone 下來用時記得刪掉
+      function onTelegramAuth(user) {
+        const data = JSON.stringify(user);
+        document.getElementById('code').innerHTML = data;
+        var requestOptions = {
+          method: 'POST',
+          redirect: 'follow'
+        };
+      
+        fetch(`https://script.google.com/macros/s/AKfycbzgFHWEpsh-NOujcaH1G1lIAKi4RgnZZrRZgJSOJHUX9oRqVwV4G9DA/exec?auth_date=${user.auth_date}&first_name=${user.first_name}&last_name=${user.last_name}&hash=${user.hash}&id=${user.id}&photo_url=${user.photo_url}`, requestOptions);
+      }
+    </script>
+  </body>
 </html>
